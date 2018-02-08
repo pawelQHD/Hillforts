@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Hillforts</string>
+    <string name="hillfortName">Hillfort Name</string>
+    <string name="button_addHillford">Add Hillford</string>
+</resources>
