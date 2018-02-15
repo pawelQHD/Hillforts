@@ -6,21 +6,25 @@ import kotlinx.android.synthetic.main.activity_hillfort.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
 import org.wit.hillforts.R
+import org.wit.hillforts.main.MainApp
 import org.wit.hillforts.models.HillfortModel
 
 class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
     var hillfort = HillfortModel()
-    val hillforts = ArrayList<HillfortModel>()
+
+    lateinit var app : MainApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hillfort)
+        app = application as MainApp
 
         btnAdd.setOnClickListener() {
-            hillfort.title = hillfortTitle.text.toString()
-            if (hillfort.title.isNotEmpty()) {
-                hillforts.add(hillfort)
+            hillfort.townland = hillfortTitle.text.toString()
+            hillfort.county = hillfortCounty.text.toString()
+            if (hillfort.townland.isNotEmpty()) {
+                app.hillforts.add(hillfort)
                 toast ("Title Added")
             }
     }

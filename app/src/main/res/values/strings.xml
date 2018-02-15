@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Hillforts</string>
-    <string name="hillfortName">Hillfort Name</string>
-    <string name="button_addHillford">Add Hillford</string>
+    <string name="hillfortName">Townland Name</string>
+    <string name="button_addHillford">Add Hillfort</string>
+    <string name="button_county">County</string>
 </resources>
