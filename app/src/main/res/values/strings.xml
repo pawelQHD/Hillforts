@@ -3,4 +3,5 @@
     <string name="hillfortName">Townland Name</string>
     <string name="button_addHillford">Add Hillfort</string>
     <string name="button_county">County</string>
+    <string name="menu_addHillfort">Add</string>
 </resources>
