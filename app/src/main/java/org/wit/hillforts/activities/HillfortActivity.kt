@@ -5,9 +5,9 @@ import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_hillfort.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.toast
-import org.wit.hillforts.R
 import org.wit.hillforts.main.MainApp
 import org.wit.hillforts.models.HillfortModel
+import org.wit.placemark.R
 
 class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
