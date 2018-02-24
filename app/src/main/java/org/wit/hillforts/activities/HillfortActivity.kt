@@ -15,8 +15,8 @@ import org.wit.placemark.R
 class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
     var hillfort = HillfortModel()
-
-    lateinit var app : MainApp
+    lateinit var app: MainApp
+    var edit = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,32 +24,47 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         app = application as MainApp
         toolbarAdd.title = title
         setSupportActionBar(toolbarAdd)
+        if (intent.hasExtra("placemark_edit")) {
+            edit = true
+            btnAdd.setText(R.string.save_hillfort)
+            hillfort = intent.extras.getParcelable<HillfortModel>("placemark_edit")
+            hillfortTitle.setText(hillfort.townland)
+            hillfortCounty.setText(hillfort.county)
+        }
 
         btnAdd.setOnClickListener() {
             hillfort.townland = hillfortTitle.text.toString()
             hillfort.county = hillfortCounty.text.toString()
-            if (hillfort.townland.isNotEmpty()) {
-                //app.hillforts.add(hillfort.copy())
-                app.hillforts.create(hillfort.copy())
-                //info("add Button Pressed: $hillfortTitle")
-                //app.hillforts.forEach { info("add Button Pressed: ${it}")}
-                //app.hillforts.findAll().forEach{ info("add Button Pressed: ${it}") }
-                setResult(AppCompatActivity.RESULT_OK)
+
+            if (edit) {
+                app.hillforts.update(hillfort.copy())
+                setResult(201)
                 finish()
-            }
-    }
-    }
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_hillfort, menu)
-        return super.onCreateOptionsMenu(menu)
-    }
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when (item?.itemId) {
-            R.id.item_cancel -> {
-                setResult(RESULT_CANCELED)
-                finish()
+            } else {
+                if (hillfort.townland.isNotEmpty()) {
+                    app.hillforts.create(hillfort.copy())
+                    setResult(200)
+                    finish()
+                } else {
+                    toast(R.string.enter_hillfort_title)
+                }
             }
         }
-        return super.onOptionsItemSelected(item)
     }
-}
+        override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+            menuInflater.inflate(R.menu.menu_hillfort, menu)
+            return super.onCreateOptionsMenu(menu)
+        }
+
+        override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+            when (item?.itemId) {
+                R.id.item_cancel -> {
+                    setResult(RESULT_CANCELED)
+                    finish()
+                }
+            }
+            return super.onOptionsItemSelected(item)
+        }
+    }
+
+
