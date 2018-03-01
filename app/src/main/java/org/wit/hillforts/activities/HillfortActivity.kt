@@ -1,5 +1,6 @@
 package org.wit.hillforts.activities
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -8,6 +9,9 @@ import kotlinx.android.synthetic.main.activity_hillfort.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
 import org.jetbrains.anko.toast
+import org.wit.hillforts.helpers.readImage
+import org.wit.hillforts.helpers.readImageFromPath
+import org.wit.hillforts.helpers.showImagePicker
 import org.wit.hillforts.main.MainApp
 import org.wit.hillforts.models.HillfortModel
 import org.wit.placemark.R
@@ -17,6 +21,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
     var hillfort = HillfortModel()
     lateinit var app: MainApp
     var edit = false
+    val IMAGE_REQUEST = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +35,10 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             hillfort = intent.extras.getParcelable<HillfortModel>("placemark_edit")
             hillfortTitle.setText(hillfort.townland)
             hillfortCounty.setText(hillfort.county)
+            placemarkImage.setImageBitmap(readImageFromPath(this, hillfort.image))
+            if (hillfort.image != null) {
+                chooseImage.setText(R.string.change_hillfort_image)
+            }
         }
 
         btnAdd.setOnClickListener() {
@@ -50,21 +59,38 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 }
             }
         }
-    }
-        override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-            menuInflater.inflate(R.menu.menu_hillfort, menu)
-            return super.onCreateOptionsMenu(menu)
-        }
+        chooseImage.setOnClickListener {
+            showImagePicker(this, IMAGE_REQUEST)
 
-        override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-            when (item?.itemId) {
-                R.id.item_cancel -> {
-                    setResult(RESULT_CANCELED)
-                    finish()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_hillfort, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.item_cancel -> {
+                setResult(RESULT_CANCELED)
+                finish()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            IMAGE_REQUEST -> {
+                if (data != null) {
+                    hillfort.image = data.getData().toString()
+                    placemarkImage.setImageBitmap(readImage(this, resultCode, data))
                 }
             }
-            return super.onOptionsItemSelected(item)
         }
     }
+}
 
 
