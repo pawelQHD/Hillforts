@@ -13,10 +13,9 @@ class HillfortMemStore : HillfortStore, AnkoLogger {
 
     val hillforts = ArrayList<HillfortModel>()
 
-    override fun findAll(): List<HillfortModel> {
+    suspend override fun findAll(): List<HillfortModel> {
         return hillforts
     }
-
     override fun create(hillfort: HillfortModel) {
         hillfort.id = getId()
         hillforts.add(hillfort)
