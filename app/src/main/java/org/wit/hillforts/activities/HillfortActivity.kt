@@ -35,6 +35,8 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             hillfort = intent.extras.getParcelable<HillfortModel>("placemark_edit")
             hillfortTitle.setText(hillfort.townland)
             hillfortCounty.setText(hillfort.county)
+            hillfortDate.setText(hillfort.date)
+            hillfortPosition.setText(hillfort.position)
             placemarkImage.setImageBitmap(readImageFromPath(this, hillfort.image))
             if (hillfort.image != null) {
                 chooseImage.setText(R.string.change_hillfort_image)
@@ -44,19 +46,20 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         btnAdd.setOnClickListener() {
             hillfort.townland = hillfortTitle.text.toString()
             hillfort.county = hillfortCounty.text.toString()
+            hillfort.position = hillfortPosition.text.toString()
+            hillfort.date = hillfortDate.text.toString()
 
             if (edit) {
                 app.hillforts.update(hillfort.copy())
                 setResult(201)
                 finish()
-            } else {
-                if (hillfort.townland.isNotEmpty()) {
-                    app.hillforts.create(hillfort.copy())
-                    setResult(200)
-                    finish()
-                } else {
-                    toast(R.string.enter_hillfort_title)
-                }
+            } else if (hillfort.townland.isEmpty()) {
+                toast(R.string.enter_hillfort_title)
+            }
+            else {
+                app.hillforts.create(hillfort.copy())
+                setResult(200)
+                finish()
             }
         }
         chooseImage.setOnClickListener {

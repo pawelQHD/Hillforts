@@ -11,4 +11,6 @@ import kotlinx.android.parcel.Parcelize
 data class HillfortModel(@PrimaryKey(autoGenerate = true) var id: Long = 0,
                          var townland: String = "",
                          var county: String = "",
-                         var image: String = "") : Parcelable
+                         var image: String = "",
+                         var position: String = "",
+                         var date: String = "") : Parcelable
