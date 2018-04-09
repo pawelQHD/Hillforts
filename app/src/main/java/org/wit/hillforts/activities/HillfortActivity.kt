@@ -8,12 +8,14 @@ import android.view.MenuItem
 import kotlinx.android.synthetic.main.activity_hillfort.*
 import org.jetbrains.anko.AnkoLogger
 import org.jetbrains.anko.info
+import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.toast
 import org.wit.hillforts.helpers.readImage
 import org.wit.hillforts.helpers.readImageFromPath
 import org.wit.hillforts.helpers.showImagePicker
 import org.wit.hillforts.main.MainApp
 import org.wit.hillforts.models.HillfortModel
+import org.wit.hillforts.models.Location
 import org.wit.placemark.R
 
 class HillfortActivity : AppCompatActivity(), AnkoLogger {
@@ -22,6 +24,8 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
     lateinit var app: MainApp
     var edit = false
     val IMAGE_REQUEST = 1
+    val LOCATION_REQUEST = 2
+    var location = Location(52.245696, -7.139102, 15f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,8 +59,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 finish()
             } else if (hillfort.townland.isEmpty()) {
                 toast(R.string.enter_hillfort_title)
-            }
-            else {
+            } else {
                 app.hillforts.create(hillfort.copy())
                 setResult(200)
                 finish()
@@ -65,6 +68,9 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         chooseImage.setOnClickListener {
             showImagePicker(this, IMAGE_REQUEST)
 
+        }
+        placemarkLocation.setOnClickListener {
+            startActivityForResult(intentFor<MapsActivity>().putExtra("location", location), LOCATION_REQUEST)
         }
     }
 
@@ -90,6 +96,11 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 if (data != null) {
                     hillfort.image = data.getData().toString()
                     placemarkImage.setImageBitmap(readImage(this, resultCode, data))
+                }
+            }
+            LOCATION_REQUEST -> {
+                if (data != null) {
+                    location = data.extras.getParcelable<Location>("location")
                 }
             }
         }
