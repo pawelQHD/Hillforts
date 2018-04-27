@@ -25,7 +25,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
     var edit = false
     val IMAGE_REQUEST = 1
     val LOCATION_REQUEST = 2
-    var location = Location(52.245696, -7.139102, 15f)
+    //var location = Location(52.245696, -7.139102, 15f)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,7 +40,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
             hillfortTitle.setText(hillfort.townland)
             hillfortCounty.setText(hillfort.county)
             hillfortDate.setText(hillfort.date)
-            hillfortPosition.setText(hillfort.position)
+            //hillfortPosition.setText(hillfort.position)
             placemarkImage.setImageBitmap(readImageFromPath(this, hillfort.image))
             if (hillfort.image != null) {
                 chooseImage.setText(R.string.change_hillfort_image)
@@ -50,7 +50,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         btnAdd.setOnClickListener() {
             hillfort.townland = hillfortTitle.text.toString()
             hillfort.county = hillfortCounty.text.toString()
-            hillfort.position = hillfortPosition.text.toString()
+            //hillfort.position = hillfortPosition.text.toString()
             hillfort.date = hillfortDate.text.toString()
 
             if (edit) {
@@ -70,6 +70,12 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
 
         }
         placemarkLocation.setOnClickListener {
+            val location = Location(52.245696, -7.139102, 15f)
+            if (hillfort.zoom != 0f) {
+                location.lat =  hillfort.lat
+                location.lng = hillfort.lng
+                location.zoom = hillfort.zoom
+            }
             startActivityForResult(intentFor<MapsActivity>().putExtra("location", location), LOCATION_REQUEST)
         }
     }
@@ -96,11 +102,15 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 if (data != null) {
                     hillfort.image = data.getData().toString()
                     placemarkImage.setImageBitmap(readImage(this, resultCode, data))
+                    chooseImage.setText(R.string.change_hillfort_image)
                 }
             }
             LOCATION_REQUEST -> {
                 if (data != null) {
-                    location = data.extras.getParcelable<Location>("location")
+                    val location = data.extras.getParcelable<Location>("location")
+                    hillfort.lat = location.lat
+                    hillfort.lng = location.lng
+                    hillfort.zoom = location.zoom
                 }
             }
         }

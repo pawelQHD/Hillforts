@@ -14,4 +14,6 @@
     <string name="position">Latitude and Longitude</string>
     <string name="button_location">Set Location</string>
     <string name="title_activity_maps">Map</string>
+    <string name="dialog_title_delete">Delete</string>
+    <string name="dialog_desc_delete">Are you sure you want to delete Hill fort?</string>
 </resources>

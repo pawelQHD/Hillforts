@@ -11,6 +11,8 @@ import kotlinx.android.synthetic.main.activity_hillfort_list.*
 import kotlinx.android.synthetic.main.card_hillfort.view.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
+import org.jetbrains.anko.alert
+import org.jetbrains.anko.ctx
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.startActivityForResult
 import org.wit.hillforts.main.MainApp
@@ -58,5 +60,17 @@ class PlacemarkListActivity : AppCompatActivity(), HillfortListener {
     fun showPlacemarks (placemarks: List<HillfortModel>) {
         recyclerView.adapter = HillfortAdapter(placemarks, this)
         recyclerView.adapter.notifyDataSetChanged()
+    }
+    override fun onPlacemarkLongClick(placemark: HillfortModel) {
+        val title = ctx.getString(R.string.dialog_title_delete)
+        val message = ctx.getString(R.string.dialog_desc_delete)
+
+        alert(message, title) {
+            positiveButton(ctx.getString(android.R.string.ok)) {
+                app.hillforts.delete(placemark)
+                loadHillforts()
+            }
+            negativeButton(ctx.getString(android.R.string.no)) { }
+        }.show()
     }
 }

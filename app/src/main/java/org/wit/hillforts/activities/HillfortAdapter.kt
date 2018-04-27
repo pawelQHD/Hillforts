@@ -11,6 +11,7 @@ import org.wit.placemark.R
 
 interface HillfortListener {
     fun onHillfortClick(hillfort: HillfortModel)
+    fun onPlacemarkLongClick(hillfort: HillfortModel)
 }
 
 class HillfortAdapter constructor(private var hillforts: List<HillfortModel>,
@@ -32,10 +33,11 @@ class HillfortAdapter constructor(private var hillforts: List<HillfortModel>,
         fun bind(hillfort: HillfortModel, listener : HillfortListener) {
             itemView.placemarkTitle.text = hillfort.townland
             itemView.description.text = hillfort.county
-            itemView.cardLocation.text = hillfort.position
+            //itemView.cardLocation.text = hillfort.position
             itemView.cardDate.text = hillfort.date
             itemView.imageIcon.setImageBitmap(readImageFromPath(itemView.context, hillfort.image))
             itemView.setOnClickListener {listener.onHillfortClick(hillfort) }
+            itemView.setOnLongClickListener { listener.onPlacemarkLongClick(hillfort); true }
         }
     }
 }

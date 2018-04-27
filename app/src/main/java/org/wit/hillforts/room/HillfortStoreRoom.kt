@@ -36,4 +36,9 @@ class HillfortStoreRoom(val context: Context) : HillfortStore {
             dao.update(placemark)
         }
     }
+    override fun delete(placemark: HillfortModel) {
+        bg {
+            dao.deletePlacemark(placemark)
+        }
+    }
 }
