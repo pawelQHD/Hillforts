@@ -1,5 +1,6 @@
 package org.wit.hillforts.activities
 
+import android.app.Activity
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
@@ -31,8 +32,10 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hillfort)
         app = application as MainApp
+
         toolbarAdd.title = title
         setSupportActionBar(toolbarAdd)
+
         if (intent.hasExtra("placemark_edit")) {
             edit = true
             btnAdd.setText(R.string.save_hillfort)
@@ -48,7 +51,7 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
         }
 
         btnAdd.setOnClickListener() {
-            hillfort.townland = hillfortTitle.text.toString()
+            /*hillfort.townland = hillfortTitle.text.toString()
             hillfort.county = hillfortCounty.text.toString()
             //hillfort.position = hillfortPosition.text.toString()
             hillfort.date = hillfortDate.text.toString()
@@ -63,6 +66,26 @@ class HillfortActivity : AppCompatActivity(), AnkoLogger {
                 app.hillforts.create(hillfort.copy())
                 setResult(200)
                 finish()
+            }*/
+
+            hillfort.townland = hillfortTitle.text.toString()
+            hillfort.county = hillfortCounty.text.toString()
+            hillfort.date = hillfortDate.text.toString()
+
+            if (edit) {
+                app.hillforts.update(hillfort.copy())
+                setResult(201)
+                finish()
+            }
+            else {
+                if (hillfort.townland.isNotEmpty()) {
+                    app.hillforts.create(hillfort.copy())
+                    setResult(200)
+                    finish()
+                }
+                else {
+                    toast(R.string.enter_hillfort_title)
+                }
             }
         }
         chooseImage.setOnClickListener {

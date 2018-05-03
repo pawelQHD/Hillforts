@@ -16,5 +16,5 @@ interface HillfortDao {
     fun update(hillfort: HillfortModel)
 
     @Delete
-    fun deletePlacemark(placemark: HillfortModel)
+    fun deletePlacemark(hillfort: HillfortModel)
 }

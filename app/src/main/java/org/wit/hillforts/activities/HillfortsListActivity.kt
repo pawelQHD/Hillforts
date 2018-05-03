@@ -11,15 +11,12 @@ import kotlinx.android.synthetic.main.activity_hillfort_list.*
 import kotlinx.android.synthetic.main.card_hillfort.view.*
 import kotlinx.coroutines.experimental.android.UI
 import kotlinx.coroutines.experimental.async
-import org.jetbrains.anko.alert
-import org.jetbrains.anko.ctx
-import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.startActivityForResult
+import org.jetbrains.anko.*
 import org.wit.hillforts.main.MainApp
 import org.wit.hillforts.models.HillfortModel
 import org.wit.placemark.R
 
-class PlacemarkListActivity : AppCompatActivity(), HillfortListener {
+class HillfortsListActivity : AppCompatActivity(), HillfortListener {
 
     lateinit var app: MainApp
 
@@ -27,6 +24,7 @@ class PlacemarkListActivity : AppCompatActivity(), HillfortListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hillfort_list)
         app = application as MainApp
+
         toolbarMain.title = title
         setSupportActionBar(toolbarMain)
 
@@ -45,6 +43,7 @@ class PlacemarkListActivity : AppCompatActivity(), HillfortListener {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.item_add -> startActivityForResult<HillfortActivity>(AppCompatActivity.RESULT_OK)
+            R.id.item_map -> startActivity<HillfortMapActivity>()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -53,12 +52,12 @@ class PlacemarkListActivity : AppCompatActivity(), HillfortListener {
     }
     private fun loadHillforts() {
         async(UI) {
-            showPlacemarks(app.hillforts.findAll())
+            showHillforts(app.hillforts.findAll())
         }
     }
 
-    fun showPlacemarks (placemarks: List<HillfortModel>) {
-        recyclerView.adapter = HillfortAdapter(placemarks, this)
+    fun showHillforts (hillforts: List<HillfortModel>) {
+        recyclerView.adapter = HillfortAdapter(hillforts, this)
         recyclerView.adapter.notifyDataSetChanged()
     }
     override fun onPlacemarkLongClick(placemark: HillfortModel) {

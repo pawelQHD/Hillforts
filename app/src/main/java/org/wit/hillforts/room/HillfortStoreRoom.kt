@@ -18,27 +18,27 @@ class HillfortStoreRoom(val context: Context) : HillfortStore {
     }
 
     override suspend fun findAll(): List<HillfortModel> {
-        val deferredPlacemarks = bg {
+        val deferredHillforts = bg {
             dao.findAll()
         }
-        val placemarks = deferredPlacemarks.await()
-        return placemarks
+        val hillforts = deferredHillforts.await()
+        return hillforts
     }
 
-    override fun create(placemark: HillfortModel) {
+    override fun create(hillfort: HillfortModel) {
         bg {
-            dao.create(placemark)
+            dao.create(hillfort)
         }
     }
 
-    override fun update(placemark: HillfortModel) {
+    override fun update(hillfort: HillfortModel) {
         bg {
-            dao.update(placemark)
+            dao.update(hillfort)
         }
     }
-    override fun delete(placemark: HillfortModel) {
+    override fun delete(hillfort: HillfortModel) {
         bg {
-            dao.deletePlacemark(placemark)
+            dao.deletePlacemark(hillfort)
         }
     }
 }
