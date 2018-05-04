@@ -41,4 +41,8 @@ class HillfortMemStore : HillfortStore, AnkoLogger {
     override fun delete(placemark: HillfortModel) {
         hillforts.remove(placemark)
     }
+    suspend override fun findById(id:Long) : HillfortModel? {
+        val foundPlacemark: HillfortModel? = hillforts.find { p -> p.id == id }
+        return foundPlacemark
+    }
 }

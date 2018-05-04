@@ -17,4 +17,7 @@ interface HillfortDao {
 
     @Delete
     fun deletePlacemark(hillfort: HillfortModel)
+
+    @Query("select * from HillfortModel where id = :arg0")
+    fun findById(id: Long): HillfortModel
 }

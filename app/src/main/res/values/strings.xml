@@ -17,4 +17,6 @@
     <string name="dialog_title_delete">Delete</string>
     <string name="dialog_desc_delete">Are you sure you want to delete Hill fort?</string>
     <string name="title_activity_hillfort_map">Map of all Hillforts</string>
+    <string name="menu_saveHillfort">Save</string>
+    <string name="here">here</string>
 </resources>

@@ -5,4 +5,5 @@ interface HillfortStore {
     fun update(hillfort: HillfortModel)
     suspend fun findAll(): List<HillfortModel>
     fun delete(hillfort: HillfortModel)
+    suspend fun findById(id:Long) : HillfortModel?
 }
